@@ -5,6 +5,31 @@
 
 ---
 
+## Table of Contents
+- [About](#about)
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Opening the Plugin](#opening-the-plugin)
+- [Understanding the Plugin](#understanding-the-plugin)
+- [Tab 1: Summary](#tab-1-summary)
+  - [Light/Dark Mode](#lightdark-mode)
+  - [Flow Name](#flow-name)
+  - [Contextual Information](#contextual-information)
+- [Tab 2: Define Flow Steps](#tab-2-define-flow-steps)
+- [Tab 3: User Guide](#tab-3-user-guide)
+- [Using "Initialize flow"](#using-initialize-flow)
+- [Working with Flow Diagrams](#working-with-flow-diagrams)
+  - [The Three-Column Approach](#the-three-column-approach)
+  - [Best Practices](#best-practices)
+  - [Collaboration Tips](#collaboration-tips)
+- [Troubleshooting](#troubleshooting)
+- [Why This Tool Exists](#why-this-tool-exists)
+- [Version History](#version-history)
+- [About (Contact)](#about-1)
+- [License](#license)
+
+---
+
 ## About
 
 UX Flow Logic is a Figma plugin for creating annotated user flow diagrams. It gives you a sticker sheet of standard flowchart symbols and lets you build your flow visually.
