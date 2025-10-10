@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UX Flow Logic</title>
+  <style>
+    :root {
+      /* Light Mode Colors */
+      --color-bg-light: #FFFFFF;
+      --color-text-light: #303030;
+      --color-text-secondary-light: #767676;
+      --color-border-light: #D9D9D9;
+      --color-border-input-light: #CCCCCC;
+      --color-interactive-light: #0070C0;
+      --color-input-bg-light: #FFFFFF;
+      --color-primary: #0070C0;
+      --color-white: #FFFFFF;
+      
+      /* Dark Mode Colors */
+      --color-bg-dark: #01243E;
+      --color-text-dark: #F3F3F3;
+      --color-text-secondary-dark: #CCCCCC;
+      --color-border-dark: #3D3D3D;
+      --color-border-input-dark: #5A5A5A;
+      --color-interactive-dark: #D0CF94;
+      --color-input-bg-dark: #002642;
+      
+      /* Spacing */
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      
+      /* Typography */
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-size-small: 14px;
+      --font-size-base: 16px;
+      --font-size-subheading: 20px;
+      
+      /* Border Radius */
+      --radius-sm: 8px;
+      --radius-pill: 20px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: var(--font-family);
+      font-size: var(--font-size-base);
+      line-height: 1.4;
+      background-color: var(--color-bg-light);
+      color: var(--color-text-light);
+      overflow: hidden;
+    }
+    
+    body.dark-mode {
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-dark);
+    }
+    
+    .plugin-container {
+      width: 400px;
+      height: 600px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    
+    .content-inner {
+      padding: var(--spacing-lg) 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xl);
+      flex: 1;
+    }
+    
+    /* Tabs */
+    .top-area {
+      border-bottom: 1px solid var(--color-border-light);
+      padding: var(--spacing-sm) var(--spacing-md) 0;
+    }
+    
+    body.dark-mode .top-area {
+      border-bottom-color: var(--color-border-dark);
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 0;
+    }
+    
+    .tab {
+      padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-xs);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      cursor: pointer;
+      font-family: var(--font-family);
+      font-size: var(--font-size-small);
+      font-weight: 400;
+      color: var(--color-text-secondary-light);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    
+    body.dark-mode .tab {
+      color: var(--color-text-secondary-dark);
+    }
+    
+    .tab:hover {
+      background-color: rgba(0, 0, 0, 0.03);
+    }
+    
+    body.dark-mode .tab:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .tab.active {
+      font-weight: 600;
+      color: var(--color-interactive-light);
+      border-bottom-color: var(--color-interactive-light);
+    }
+    
+    body.dark-mode .tab.active {
+      color: var(--color-interactive-dark);
+      border-bottom-color: var(--color-interactive-dark);
+    }
+    
+    /* Theme Toggle */
+    .theme-toggle-section {
+      padding: var(--spacing-md) var(--spacing-xl);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+    
+    .theme-label {
+      font-size: var(--font-size-small);
+      font-weight: 600;
+      color: #1E1E1E;
+    }
+    
+    body.dark-mode .theme-label {
+      color: #F3F3F3;
+    }
+    
+    .theme-toggle {
+      display: flex;
+      border: 1px solid #757575;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    
+    body.dark-mode .theme-toggle {
+      border-color: #757575;
+    }
+    
+    .theme-btn {
+      padding: var(--spacing-sm);
+      background: var(--color-white);
+      border: none;
+      font-family: var(--font-family);
+      font-size: var(--font-size-base);
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #1E1E1E;
+      white-space: nowrap;
+      height: 32px;
+      min-width: fit-content;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    body.dark-mode .theme-btn {
+      background: #01243E;
+      color: #F3F3F3;
+    }
+    
+    .theme-btn:first-child {
+      border-right: 1px solid #757575;
+    }
+    
+    .theme-btn.selected {
+      background-color: var(--color-primary);
+      color: var(--color-white);
+      font-weight: 600;
+    }
+    
+    body.dark-mode .theme-btn.selected {
+      background-color: var(--color-primary);
+      color: var(--color-white);
+      font-weight: 600;
+    }
+    
+    /* Content Sections */
+    .content-section {
+      padding: 0 var(--spacing-xl);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+    
+    .content-section.fill {
+      flex: 1;
+      min-height: 0;
+    }
+    
+    .section-title {
+      font-size: var(--font-size-subheading);
+      font-weight: 400;
+      line-height: 1.2;
+    }
+    
+    .section-text {
+      font-size: var(--font-size-base);
+      line-height: 1.4;
+    }
+    
+    /* Input Field */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .input-label {
+      font-size: var(--font-size-base);
+      color: var(--color-text-light);
+    }
+    
+    body.dark-mode .input-label {
+      color: var(--color-text-dark);
+    }
+    
+    .text-input {
+      width: 100%;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--color-border-input-light);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-family);
+      font-size: var(--font-size-base);
+      background-color: var(--color-input-bg-light);
+      color: var(--color-text-light);
+      transition: all 0.2s;
+    }
+    
+    body.dark-mode .text-input {
+      border-color: var(--color-border-input-dark);
+      background-color: var(--color-input-bg-dark);
+      color: var(--color-text-dark);
+    }
+    
+    .text-input:focus {
+      outline: none;
+      border-color: var(--color-interactive-light);
+    }
+    
+    body.dark-mode .text-input:focus {
+      border-color: var(--color-interactive-dark);
+    }
+    
+    /* Textarea */
+    .textarea-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      flex: 1;
+      min-height: 0;
+    }
+    
+    .textarea-field {
+      width: 100%;
+      flex: 1;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--color-border-input-light);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-family);
+      font-size: var(--font-size-base);
+      background-color: var(--color-input-bg-light);
+      color: var(--color-text-light);
+      resize: none;
+      transition: all 0.2s;
+    }
+    
+    body.dark-mode .textarea-field {
+      border-color: var(--color-border-input-dark);
+      background-color: var(--color-input-bg-dark);
+      color: var(--color-text-dark);
+    }
+    
+    .textarea-field:focus {
+      outline: none;
+      border-color: var(--color-interactive-light);
+    }
+    
+    body.dark-mode .textarea-field:focus {
+      border-color: var(--color-interactive-dark);
+    }
+    
+    /* Menu List */
+    .menu-list {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid var(--color-border-light);
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    body.dark-mode .menu-item {
+      border-bottom-color: var(--color-border-dark);
+    }
+    
+    .menu-item:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+    
+    body.dark-mode .menu-item:hover {
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+    
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+    
+    .menu-label {
+      font-size: var(--font-size-base);
+      color: var(--color-text-light);
+    }
+    
+    body.dark-mode .menu-label {
+      color: var(--color-text-dark);
+    }
+    
+    .menu-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    
+    .menu-icon path {
+      stroke: var(--color-text-secondary-light);
+    }
+    
+    body.dark-mode .menu-icon path {
+      stroke: var(--color-text-secondary-dark);
+    }
+    
+    /* Buttons */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md) var(--spacing-sm);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-family);
+      font-size: var(--font-size-base);
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      background: none;
+    }
+    
+    .btn-primary {
+      background-color: var(--color-primary);
+      color: var(--color-text-dark);
+      font-weight: 600;
+    }
+    
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+    
+    .btn-secondary {
+      border: 1px solid var(--color-interactive-light);
+      background-color: var(--color-bg-light);
+      color: var(--color-interactive-light);
+    }
+    
+    body.dark-mode .btn-secondary {
+      border-color: #A5CECF;
+      background-color: var(--color-bg-dark);
+      color: #A5CECF;
+    }
+    
+    .btn-secondary:hover {
+      background-color: rgba(0, 112, 192, 0.05);
+    }
+    
+    body.dark-mode .btn-secondary:hover {
+      background-color: rgba(208, 207, 148, 0.1);
+    }
+    
+    .btn-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+    
+    .btn-secondary .btn-icon path {
+      stroke: var(--color-interactive-light);
+    }
+    
+    body.dark-mode .btn-secondary .btn-icon path {
+      stroke: #A5CECF;
+    }
+    
+    /* Back Button */
+    .back-btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      gap: 10px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      margin: 0 var(--spacing-lg);
+      align-self: flex-start;
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+    }
+    
+    .back-btn svg {
+      width: 23px;
+      height: 16px;
+    }
+    
+    .back-btn path {
+      fill: var(--color-primary);
+    }
+    
+    body.dark-mode .back-btn path {
+      fill: #A5CECF;
+    }
+    
+    /* Footer */
+    .sticky-footer {
+      padding: var(--spacing-xl);
+      border-top: 1px solid var(--color-border-light);
+      background-color: var(--color-bg-light);
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+    
+    body.dark-mode .sticky-footer {
+      border-top-color: var(--color-border-dark);
+      background-color: var(--color-bg-dark);
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .sticky-footer .btn {
+      flex: 1;
+    }
+    
+    /* Screen visibility */
+    .screen {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .screen.active {
+      display: flex;
+    }
+    
+    /* Utility */
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="plugin-container">
+    <div class="content-wrapper">
+      <!-- Summary Screen -->
+      <div id="summaryScreen" class="screen active">
+        <!-- Tabs -->
+        <div class="top-area">
+          <div class="tabs" role="tablist">
+            <button class="tab active" role="tab" data-screen="summary">
+              Summary
+            </button>
+            <button class="tab" role="tab" data-screen="define">
+              Define flow steps
+            </button>
+            <button class="tab" role="tab" data-screen="guide">
+              User guide
+            </button>
+          </div>
+        </div>
+        
+        <div class="content-area">
+          <div class="content-inner">
+            <!-- Theme Toggle -->
+            <div class="theme-toggle-section">
+              <span class="theme-label">Theme</span>
+              <div class="theme-toggle">
+                <button type="button" class="theme-btn selected" id="lightModeBtn">☀️ Light mode</button>
+                <button type="button" class="theme-btn" id="darkModeBtn">🌙 Dark mode</button>
+              </div>
+            </div>
+            
+            <!-- Flow Name Input -->
+            <div class="content-section">
+              <div class="input-group">
+                <label class="input-label" for="flowName">Name of the flow</label>
+                <input type="text" id="flowName" class="text-input" placeholder="">
+              </div>
+            </div>
+            
+            <!-- Menu Items -->
+            <div class="content-section">
+              <div class="menu-list">
+                <div class="menu-item" data-detail="trigger">
+                  <span class="menu-label">Add Trigger</span>
+                  <svg class="menu-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.5 15L12.5 10L7.5 5" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="menu-item" data-detail="assumptions">
+                  <span class="menu-label">Add Assumptions</span>
+                  <svg class="menu-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.5 15L12.5 10L7.5 5" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="menu-item" data-detail="preconditions">
+                  <span class="menu-label">Add Pre-Conditions</span>
+                  <svg class="menu-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.5 15L12.5 10L7.5 5" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="menu-item" data-detail="postconditions">
+                  <span class="menu-label">Add Post-Conditions</span>
+                  <svg class="menu-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.5 15L12.5 10L7.5 5" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="sticky-footer">
+          <button class="btn btn-primary" id="initializeBtn">
+            Initialize flow
+          </button>
+        </div>
+      </div>
+      
+      <!-- Define Flow Steps Screen -->
+      <div id="defineScreen" class="screen">
+        <!-- Tabs -->
+        <div class="top-area">
+          <div class="tabs" role="tablist">
+            <button class="tab" role="tab" data-screen="summary">
+              Summary
+            </button>
+            <button class="tab active" role="tab" data-screen="define">
+              Define flow steps
+            </button>
+            <button class="tab" role="tab" data-screen="guide">
+              User guide
+            </button>
+          </div>
+        </div>
+        
+        <div class="content-area">
+          <div class="content-inner">
+            <div class="content-section fill">
+              <div class="textarea-group">
+                <label class="input-label" for="flowSteps">Initial flow steps outline</label>
+                <textarea id="flowSteps" class="textarea-field" placeholder=""></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="sticky-footer">
+          <button class="btn btn-primary" id="initializeBtn2">
+            Initialize flow
+          </button>
+        </div>
+      </div>
+      
+      <!-- User Guide Screen -->
+      <div id="guideScreen" class="screen">
+        <!-- Tabs -->
+        <div class="top-area">
+          <div class="tabs" role="tablist">
+            <button class="tab" role="tab" data-screen="summary">
+              Summary
+            </button>
+            <button class="tab" role="tab" data-screen="define">
+              Define flow steps
+            </button>
+            <button class="tab active" role="tab" data-screen="guide">
+              User guide
+            </button>
+          </div>
+        </div>
+        
+        <div class="content-area">
+          <div class="content-inner">
+            <div class="content-section">
+              <h2 class="section-title">About</h2>
+              <p class="section-text">
+                UX Flow Logic is a Figma plugin for creating annotated user flow diagrams. It gives you a sticker sheet of standard flowchart symbols, lets you build your flow visually, and then automatically renumbers everything with one click. It also helps you document triggers, assumptions, and conditions—all the context developers need for handoff.
+              </p>
+            </div>
+            
+            <div class="content-section">
+              <h2 class="section-title">Documentation and help</h2>
+              <button class="btn btn-secondary">
+                Place guide on Figma canvas
+              </button>
+              <button class="btn btn-secondary">
+                <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_15_461)">
+                    <path d="M6 12.6668C2.66667 13.6668 2.66667 11.0001 1.33334 10.6668M10.6667 14.6668V12.0868C10.6917 11.7689 10.6487 11.4493 10.5407 11.1493C10.4326 10.8493 10.262 10.5757 10.04 10.3468C12.1333 10.1135 14.3333 9.32012 14.3333 5.68012C14.3332 4.74934 13.9751 3.85425 13.3333 3.18012C13.6372 2.36579 13.6158 1.46569 13.2733 0.666788C13.2733 0.666788 12.4867 0.433455 10.6667 1.65345C9.13867 1.23934 7.528 1.23934 6 1.65345C4.18 0.433455 3.39334 0.666788 3.39334 0.666788C3.05092 1.46569 3.02943 2.36579 3.33334 3.18012C2.68675 3.85925 2.32835 4.76243 2.33334 5.70012C2.33334 9.31345 4.53334 10.1068 6.62667 10.3668C6.40733 10.5934 6.23818 10.8637 6.13021 11.1601C6.02224 11.4564 5.97787 11.7722 6 12.0868V14.6668" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_15_461">
+                      <rect width="16" height="16" fill="white"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+                View on GitHub
+              </button>
+              <button class="btn btn-secondary">
+                <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_15_455)">
+                    <path d="M14.6667 7.99992C14.6667 11.6818 11.6819 14.6666 8 14.6666M14.6667 7.99992C14.6667 4.31802 11.6819 1.33325 8 1.33325M14.6667 7.99992H1.33333M8 14.6666C4.3181 14.6666 1.33333 11.6818 1.33333 7.99992M8 14.6666C9.66752 12.841 10.6152 10.4719 10.6667 7.99992C10.6152 5.52794 9.66752 3.15882 8 1.33325M8 14.6666C6.33248 12.841 5.38483 10.4719 5.33333 7.99992C5.38483 5.52794 6.33248 3.15882 8 1.33325M1.33333 7.99992C1.33333 4.31802 4.3181 1.33325 8 1.33325" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_15_455">
+                      <rect width="16" height="16" fill="white"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+                Visit webpage
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="sticky-footer">
+          <button class="btn btn-primary" id="initializeBtn3">
+            Initialize flow
+          </button>
+        </div>
+      </div>
+      <!-- Detail Screen (for Add/Edit) -->
+      <div id="detailScreen" class="screen">
+        <div class="content-area">
+          <button class="back-btn" id="backBtn">
+            <svg width="23" height="16" viewBox="0 0 23 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.292892 7.29289C-0.0976315 7.68342 -0.0976315 8.31658 0.292892 8.70711L6.65685 15.0711C7.04738 15.4616 7.68054 15.4616 8.07107 15.0711C8.46159 14.6805 8.46159 14.0474 8.07107 13.6569L2.41421 8L8.07107 2.34315C8.46159 1.95262 8.46159 1.31946 8.07107 0.928932C7.68054 0.538408 7.04738 0.538408 6.65685 0.928932L0.292892 7.29289ZM23 8V7L1 7V8V9L23 9V8Z" fill="black"/>
+            </svg>
+          </button>
+          
+          <div class="content-inner">
+            <div class="content-section">
+              <h2 class="section-title" id="detailTitle">Add Trigger</h2>
+            </div>
+            
+            <div class="content-section fill">
+              <div class="textarea-group">
+                <label class="input-label" for="detailTextarea" id="detailLabel">Trigger</label>
+                <textarea id="detailTextarea" class="textarea-field" placeholder=""></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="sticky-footer">
+          <button class="btn btn-secondary" id="cancelBtn">
+            Cancel
+          </button>
+          <button class="btn btn-primary" id="saveBtn">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // State management
+    const appState = {
+      mode: 'light',
+      currentScreen: 'summary',
+      currentDetail: null,
+      flowName: '',
+      flowSteps: '',
+      trigger: '',
+      assumptions: '',
+      preconditions: '',
+      postconditions: ''
+    };
+    
+    // Theme handling
+    function setMode(mode) {
+      appState.mode = mode;
+      document.body.className = mode === 'dark' ? 'dark-mode' : '';
+      
+      const lightBtn = document.getElementById('lightModeBtn');
+      const darkBtn = document.getElementById('darkModeBtn');
+      
+      if (mode === 'light') {
+        lightBtn.classList.add('selected');
+        darkBtn.classList.remove('selected');
+      } else {
+        darkBtn.classList.add('selected');
+        lightBtn.classList.remove('selected');
+      }
+      
+      saveState();
+    }
+    
+    // Screen navigation
+    function showScreen(screenName) {
+      appState.currentScreen = screenName;
+      
+      // Hide all screens
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+      });
+      
+      // Show selected screen
+      const screenMap = {
+        'summary': 'summaryScreen',
+        'define': 'defineScreen',
+        'guide': 'guideScreen',
+        'detail': 'detailScreen'
+      };
+      
+      document.getElementById(screenMap[screenName]).classList.add('active');
+      
+      // Update tabs
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.dataset.screen === screenName) {
+          tab.classList.add('active');
+        }
+      });
+      
+      saveState();
+    }
+    
+    // Detail screen handling
+    function showDetail(detailType) {
+      appState.currentDetail = detailType;
+      
+      const titles = {
+        'trigger': 'Add Trigger',
+        'assumptions': 'Add Assumptions',
+        'preconditions': 'Add Pre-Conditions',
+        'postconditions': 'Add Post-Conditions'
+      };
+      
+      const labels = {
+        'trigger': 'Trigger',
+        'assumptions': 'Assumptions',
+        'preconditions': 'Pre-Conditions',
+        'postconditions': 'Post-Conditions'
+      };
+      
+      document.getElementById('detailTitle').textContent = titles[detailType];
+      document.getElementById('detailLabel').textContent = labels[detailType];
+      document.getElementById('detailTextarea').value = appState[detailType] || '';
+      
+      showScreen('detail');
+    }
+    
+    function saveDetail() {
+      if (appState.currentDetail) {
+        appState[appState.currentDetail] = document.getElementById('detailTextarea').value;
+      }
+      showScreen('summary');
+    }
+    
+    function cancelDetail() {
+      showScreen('summary');
+    }
+    
+    // State persistence
+    function saveState() {
+      appState.flowName = document.getElementById('flowName').value;
+      appState.flowSteps = document.getElementById('flowSteps').value;
+      
+      parent.postMessage({
+        pluginMessage: {
+          type: 'save-state',
+          state: appState
+        }
+      }, '*');
+    }
+    
+    function loadState() {
+      // Request state from plugin code
+      parent.postMessage({
+        pluginMessage: { type: 'get-state' }
+      }, '*');
+    }
+    
+    // Event listeners
+    document.getElementById('lightModeBtn').addEventListener('click', () => setMode('light'));
+    document.getElementById('darkModeBtn').addEventListener('click', () => setMode('dark'));
+    
+    // Tab navigation
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const screen = tab.dataset.screen;
+        showScreen(screen);
+      });
+    });
+    
+    // Menu items navigation
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const detailType = item.dataset.detail;
+        showDetail(detailType);
+      });
+    });
+    
+    // Detail screen buttons
+    document.getElementById('backBtn').addEventListener('click', cancelDetail);
+    document.getElementById('cancelBtn').addEventListener('click', cancelDetail);
+    document.getElementById('saveBtn').addEventListener('click', saveDetail);
+    
+    // Input handling
+    document.getElementById('flowName').addEventListener('input', saveState);
+    document.getElementById('flowSteps').addEventListener('input', saveState);
+    document.getElementById('detailTextarea').addEventListener('input', () => {
+      if (appState.currentDetail) {
+        appState[appState.currentDetail] = document.getElementById('detailTextarea').value;
+      }
+    });
+    
+    // Initialize buttons (send message to plugin code)
+    document.getElementById('initializeBtn').addEventListener('click', () => {
+      parent.postMessage({
+        pluginMessage: {
+          type: 'initialize-flow',
+          data: {
+            flowName: appState.flowName,
+            trigger: appState.trigger,
+            assumptions: appState.assumptions,
+            preconditions: appState.preconditions,
+            postconditions: appState.postconditions,
+            flowSteps: appState.flowSteps,
+            theme: appState.mode
+          }
+        }
+      }, '*');
+    });
+    
+    document.getElementById('initializeBtn2').addEventListener('click', () => {
+      parent.postMessage({
+        pluginMessage: {
+          type: 'initialize-flow',
+          data: {
+            flowName: appState.flowName,
+            trigger: appState.trigger,
+            assumptions: appState.assumptions,
+            preconditions: appState.preconditions,
+            postconditions: appState.postconditions,
+            flowSteps: appState.flowSteps,
+            theme: appState.mode
+          }
+        }
+      }, '*');
+    });
+    
+    document.getElementById('initializeBtn3').addEventListener('click', () => {
+      parent.postMessage({
+        pluginMessage: {
+          type: 'initialize-flow',
+          data: {
+            flowName: appState.flowName,
+            trigger: appState.trigger,
+            assumptions: appState.assumptions,
+            preconditions: appState.preconditions,
+            postconditions: appState.postconditions,
+            flowSteps: appState.flowSteps,
+            theme: appState.mode
+          }
+        }
+      }, '*');
+    });
+    
+    // Message handler from plugin code
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      if (!msg) return;
+      
+      if (msg.type === 'load-state' && msg.state) {
+        // Restore state from plugin
+        Object.assign(appState, msg.state);
+        
+        // Update UI
+        document.getElementById('flowName').value = appState.flowName || '';
+        document.getElementById('flowSteps').value = appState.flowSteps || '';
+        setMode(appState.mode || 'light');
+        showScreen(appState.currentScreen || 'summary');
+      }
+    };
+    
+    // Initialize on load
+    loadState();
+  </script>
+</body>
+</html>
