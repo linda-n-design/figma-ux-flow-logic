@@ -1,80 +1,63 @@
 # UX Flow Logic - User Guide
 
-**Version 0.1.0**  
-*Last Updated: October 9, 2025*
+**Version 1.0**  
+*Last Updated: October 13, 2025*
 
 ---
 
-## Table of Contents
+## Table of contents
 - [About](#about)
-- [Getting Started](#getting-started)
+- [Getting started](#getting-started)
   - [Installation](#installation)
-  - [Opening the Plugin](#opening-the-plugin)
-- [Understanding the Plugin](#understanding-the-plugin)
-- [Tab 1: Summary](#tab-1-summary)
-  - [Light/Dark Mode](#lightdark-mode)
-  - [Flow Name](#flow-name)
-  - [Contextual Information](#contextual-information)
-- [Tab 2: Define Flow Steps](#tab-2-define-flow-steps)
-- [Tab 3: User Guide](#tab-3-user-guide)
+  - [Running the plugin](#running-the-plugin)
+- [Understanding the plugin](#understanding-the-plugin)
+  - [Summary](#summary)
+  - [Define flow steps](#define-flow-steps)
 - [Using "Initialize flow"](#using-initialize-flow)
-- [Working with Flow Diagrams](#working-with-flow-diagrams)
-  - [The Three-Column Approach](#the-three-column-approach)
-  - [Best Practices](#best-practices)
-  - [Collaboration Tips](#collaboration-tips)
-- [Troubleshooting](#troubleshooting)
-- [Why This Tool Exists](#why-this-tool-exists)
-- [Version History](#version-history)
-- [About (Contact)](#about-1)
+  - [What gets generated](#what-gets-generated)
+  - [Important notes](#important-notes)
+- [Working with flow diagrams](#working-with-flow-diagrams)
+  - [The three-column approach](#the-three-column-approach)
+  - [Best practices](#best-practices)
+  - [Collaboration tips](#collaboration-tips)
+- [Why this tool exists](#why-this-tool-exists)
+- [Version history](#version-history)
+- [About](#about-1)
 - [License](#license)
 
 ---
 
 ## About
 
-UX Flow Logic is a Figma plugin for creating annotated user flow diagrams. It gives you a sticker sheet of standard flowchart symbols and lets you build your flow visually.
+UX Flow Logic is a Figma plugin for creating annotated user flow diagrams.
 
-This plugin supports a three-column annotated flow diagram approach:
-- **Left column:** Summary information (trigger, assumptions, pre-conditions, post-conditions)
-- **Center column:** Numbered flow steps flowing from top to bottom
-- **Right column:** Detailed notes for each numbered step
+Create annotated flow diagrams linked to detail notes. Each numbered step connects to its explanation—clean visuals with complete documentation. Map micro-interactions, user journeys, system connections, or service design flows. Generate templates with metadata sections and flowchart stencils in coordinating light or dark themes. One structured approach for thinking through complexity and communicating it clearly to your team or stakeholders.
 
 ---
 
-## Getting Started
+## Getting started
 
 ### Installation
-1. Open Figma Desktop or browser
-2. Go to **Resources** → **Plugins** → **Find more plugins**
-3. Search for "UX Flow Logic"
-4. Select **Install**
 
-### Opening the Plugin
-1. Create or open a Figma file
-2. Use the plugin on a page that's empty (if the page isn't empty, the plugin may cover existing content)
-3. Right-click → **Plugins** → **UX Flow Logic**
+1. Visit the ["UX Flow Logic" Figma Community page](https://www.figma.com/community/plugin/1548695544263550149/ux-flow-logic) and select "Open in…"
+2. In your Figma Design file, select "Save."
 
-Or use: **Cmd+/** (Mac) or **Ctrl+/** (Windows), then type "UX Flow Logic"
+### Running the plugin
+
+1. Create or open a Figma Design file. Note that this version of Figma is not designed for FigJam, but future versions might be.
+2. Open the "UX Flow Logic" plugin on an empty page for best results. If the page contains existing content, the plugin may overlay the flow diagram template and sticker sheet on top of it.
 
 ---
 
-## Understanding the Plugin
+## Understanding the plugin
 
-The UX Flow Logic plugin has three main tabs that help you create professional flow diagrams:
+The UX Flow Logic plugin has three tabs. The two most important tabs for creating professional flow diagrams are "Summary" and "Define Flow Steps."
 
-1. **Summary** - Configure your flow's visual style and add contextual information
-2. **Define Flow Steps** - Add the initial outline of your flow
-3. **User Guide** - Access documentation and help resources
-
-You can activate **"Initialize flow"** at any time from any tab. You don't need to complete all sections—the plugin will generate your diagram based on whatever information you've provided. Just make sure you're on an empty page in your Figma file.
-
----
-
-## Tab 1: Summary
+### Summary
 
 Configure the foundation of your flow diagram and add important context.
 
-### Light/Dark Mode
+#### Light/Dark Mode
 
 Choose your preferred visual theme:
 
@@ -83,16 +66,16 @@ Choose your preferred visual theme:
 
 If you select dark mode, both the diagram stencils and the flow diagram draft will have a dark background with light-colored stencils and text.
 
-### Flow Name
+#### Flow Name
 
 Enter a meaningful name for your flow.
 
 - This name will be the name of the frame containing your starter flow diagram
 - The name will also appear at the top of the frame as a title
 
-### Contextual Information
+#### Contextual Information
 
-Document the important details about your flow. Click on any item to open a separate screen where you can add your text. You can also skip adding these in the plugin and add them directly to the flow diagram frame on the canvas after clicking "Initialize Flow."
+Document the important, high-level details about your flow. Select each contextual information item to enter its details in a separate screen, or skip this step and add them directly to the flow diagram frame on the canvas after selecting 'Initialize Flow.'
 
 **Trigger**  
 What initiates this flow?
@@ -126,9 +109,7 @@ What will be true after this flow completes successfully?
 - "Order confirmation email is sent"
 - "User is redirected to dashboard"
 
----
-
-## Tab 2: Define Flow Steps
+### Define flow steps
 
 Add the initial outline of your user flow by listing the main steps in sequence.
 
@@ -153,42 +134,43 @@ Add indentation for sub-steps or conditional branches.
 
 ---
 
-## Tab 3: User Guide
-
-This section lets you place the user guide directly into your Figma file as a "UX Flow Logic User Guide" section on your current page. Keep it available for reference while you work.
-
----
-
 ## Using "Initialize flow"
 
-Activate **"Initialize flow"** at any time to generate your diagram. You don't need to complete all sections.
+Select **"Initialize flow"** at any time to generate your diagram. You don't need to complete all sections.
 
 When you activate "Initialize flow," the plugin creates two things on your page:
 
-### What Gets Generated
+### What gets generated
 
-**1. Stencil Library (Figma components in a section)**  
-A collection of standard flowchart shape components. These components are accessible in two ways:
-- **On the canvas:** In a visible section you can copy from
-- **Assets panel:** Drag and drop from your local components library anytime
+#### 1. Flow diagram shape components
 
-The stencil components include:
-- Rectangles for screens/pages
-- Diamonds for decision points
-- Ovals for start/end points
-- Connectors and arrows
+These flow diagram assets are available in two locations:
+
+**On the canvas:** Find them organized in the "Flow Diagram Sticker Sheet" frame, with their main components positioned directly below. *Important:* Keep the main components in the file—you can relocate them if needed, but don't delete them.
+
+**Assets panel:** Access them by opening the "Assets" tab in the left sidebar, then simply drag and drop onto your canvas.
 
 **Editing stencil components:**
-- Change shape type (rectangle → oval → diamond) through the Properties panel
-- Edit numbers and text by clicking directly on them, or through the Properties panel
-- All changes maintain the component connection
 
-**Draft Flow Diagram (in a frame)**  
+Double-click shapes to edit their text and numbers directly on the canvas. Plugin components cannot be edited via the Properties panel.
+
+If a component becomes semi-transparent or unresponsive:
+1. Select the component instance
+2. In the Properties panel, click the **More actions (...)** button next to the component name
+3. Select **Reset > Reset all changes**
+
+Alternatively, delete the instance and drag a fresh copy from the stencil sheet.
+
+[Learn more about resetting instances](https://help.figma.com/hc/en-us/articles/360039150733-Apply-changes-to-instances)
+
+#### 2. Draft flow diagram (in a frame)
+
 A starter diagram based on the information you added in the Summary and/or Define Flow Steps sections. If you added a flow name, it becomes:
 - The frame name in your layers panel  
 - The title displayed at the top of the diagram
 
-### Important Notes
+### Important notes
+
 - Use the plugin on an empty page (if the page isn't empty, the plugin may cover existing content)
 - The generated diagram is just a starting point
 - You'll likely add more steps and modify it on the page
@@ -197,9 +179,9 @@ A starter diagram based on the information you added in the Summary and/or Defin
 
 ---
 
-## Working with Flow Diagrams
+## Working with flow diagrams
 
-### The Three-Column Approach
+### The three-column approach
 
 This plugin supports a proven layout structure that's been beneficial in UX design work:
 
@@ -212,18 +194,18 @@ The main user journey flowing from top to bottom. This is the "happy path" throu
 **Right Column: Details**  
 Specifics for each numbered step: error states, validation rules, alternate paths, technical notes, or design considerations.
 
-### Best Practices
+### Best practices
+
 - Access stencil components from the canvas section or Assets panel (whichever is faster for your workflow)
-- Use the Properties panel to quickly change shape types without recreating elements
 - Start with the basic flow—add complexity after the foundation is working
 - Use consistent shape meanings throughout your flows
 - Number your steps for easy reference in discussions
 - Keep decision points clear with yes/no labels
 - Document edge cases and error states
 - Group related steps visually
-- Add version numbers when sharing with teams
 
-### Collaboration Tips
+### Collaboration tips
+
 - Use Figma comments to discuss specific decision points
 - Share the frame link for async review
 - Update the flow as requirements change
@@ -231,51 +213,24 @@ Specifics for each numbered step: error states, validation rules, alternate path
 
 ---
 
-## Troubleshooting
-
-**Plugin won't open**  
-- Refresh Figma (Cmd+R / Ctrl+R)
-- Check that plugin is installed under Resources → Plugins
-
-**Initialize flow doesn't generate anything**  
-- Verify you're on a page with edit access
-- Try zooming out—elements may be placed outside your current view
-
-**Can't find generated elements**  
-- Use Cmd+F (Mac) or Ctrl+F (Windows) to search for "UX Flow Logic"
-- Check the Layers panel for the generated frame
-- Zoom to fit the page (Shift+1)
-
-**Dark mode shapes not visible**  
-- Check your Figma page background color
-- Dark mode is designed for dark page backgrounds
-
-**Need more help?**  
-- Visit [lindadesign.net/figma-plugin/ux_flow_logic.html](http://lindadesign.net/figma-plugin/ux_flow_logic.html)
-- Report issues on [GitHub Issues](https://github.com/linda-n-design/figma-ux-flow-logic/issues)
-- Contact information available on website
-
----
-
-## Why This Tool Exists
+## Why this tool exists
 
 I built this tool to help make your UX work more efficient. This annotated flow diagram method has been hugely beneficial in my career.
 
-My first UX design manager and interaction design rock star, Chris Harper, taught me this technique when I was a junior interaction designer in 2004. This plugin is dedicated to his memory.
+My first UX design manager, interaction design rock star, and brilliant poet, Chris Harper, taught me this technique when I was a junior interaction designer in 2004.
 
 ---
 
-## Version History
+## Version history
 
-### Version 0.1.0 (October 9, 2025)
-**Beta Release**
+### Version 1.0 (October 13, 2025)
+
 - Core plugin functionality
 - Summary tab with light/dark mode support
 - Define flow steps interface
 - User guide tab with documentation links
 - "Initialize flow" generation
 - Component-based stencil library (accessible from page and Assets panel)
-- Editable shape variants and text properties
 
 ---
 
@@ -283,8 +238,9 @@ My first UX design manager and interaction design rock star, Chris Harper, taugh
 
 **UX Flow Logic** is created and maintained by Linda Nakasone.
 
+**For a visual guide with screenshots and examples**, visit the [UX Flow Logic documentation page](https://lindadesign.net/figma-plugin/ux_flow_logic.html).
+
 - Website: [lindadesign.net](http://lindadesign.net)
-- GitHub: [github.com/linda-n-design/figma-ux-flow-logic](https://github.com/linda-n-design/figma-ux-flow-logic)
 - Support: Contact information available on website
 
 ---

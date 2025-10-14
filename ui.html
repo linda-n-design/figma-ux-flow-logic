@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UX Flow Logic</title>
+<title>UX Flow Logic (beta)</title>
   <style>
     :root {
       /* Light Mode Colors */
@@ -93,6 +93,11 @@
       flex-direction: column;
       gap: var(--spacing-xl);
       flex: 1;
+    }
+    
+    /* Detail screen specific spacing */
+    #detailScreen .content-inner {
+      padding-top: var(--spacing-xl);
     }
     
     /* Tabs */
@@ -437,38 +442,6 @@
       stroke: #A5CECF;
     }
     
-    /* Back Button */
-    .back-btn {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
-      gap: 10px;
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      cursor: pointer;
-      margin: 0 var(--spacing-lg);
-      align-self: flex-start;
-      width: 42px;
-      height: 42px;
-      flex-shrink: 0;
-    }
-    
-    .back-btn svg {
-      width: 23px;
-      height: 16px;
-    }
-    
-    .back-btn path {
-      fill: var(--color-primary);
-    }
-    
-    body.dark-mode .back-btn path {
-      fill: #A5CECF;
-    }
-    
     /* Footer */
     .sticky-footer {
       padding: var(--spacing-xl);
@@ -646,9 +619,7 @@
             
             <div class="content-section">
               <h2 class="section-title">Documentation and help</h2>
-              <button class="btn btn-secondary">
-                Place guide on Figma canvas
-              </button>
+
               <a href="https://github.com/linda-n-design/figma-ux-flow-logic/blob/main/docs/UserGuide.md" target="_blank" class="btn btn-secondary" style="text-decoration: none;">
                 <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g clip-path="url(#clip0_15_461)">
@@ -685,15 +656,10 @@
           </button>
         </div>
       </div>
+      
       <!-- Detail Screen (for Add/Edit) -->
       <div id="detailScreen" class="screen">
         <div class="content-area">
-          <button class="back-btn" id="backBtn">
-            <svg width="23" height="16" viewBox="0 0 23 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0.292892 7.29289C-0.0976315 7.68342 -0.0976315 8.31658 0.292892 8.70711L6.65685 15.0711C7.04738 15.4616 7.68054 15.4616 8.07107 15.0711C8.46159 14.6805 8.46159 14.0474 8.07107 13.6569L2.41421 8L8.07107 2.34315C8.46159 1.95262 8.46159 1.31946 8.07107 0.928932C7.68054 0.538408 7.04738 0.538408 6.65685 0.928932L0.292892 7.29289ZM23 8V7L1 7V8V9L23 9V8Z" fill="black"/>
-            </svg>
-          </button>
-          
           <div class="content-inner">
             <div class="content-section">
               <h2 class="section-title" id="detailTitle">Add Trigger</h2>
@@ -749,8 +715,6 @@
         darkBtn.classList.add('selected');
         lightBtn.classList.remove('selected');
       }
-      
-      saveState();
     }
     
     // Screen navigation
@@ -779,19 +743,20 @@
           tab.classList.add('active');
         }
       });
-      
-      saveState();
     }
     
     // Detail screen handling
     function showDetail(detailType) {
       appState.currentDetail = detailType;
       
+      const hasContent = appState[detailType] && appState[detailType].trim() !== '';
+      const prefix = hasContent ? 'Edit' : 'Add';
+      
       const titles = {
-        'trigger': 'Add Trigger',
-        'assumptions': 'Add Assumptions',
-        'preconditions': 'Add Pre-Conditions',
-        'postconditions': 'Add Post-Conditions'
+        'trigger': `${prefix} Trigger`,
+        'assumptions': `${prefix} Assumptions`,
+        'preconditions': `${prefix} Pre-Conditions`,
+        'postconditions': `${prefix} Post-Conditions`
       };
       
       const labels = {
@@ -811,6 +776,7 @@
     function saveDetail() {
       if (appState.currentDetail) {
         appState[appState.currentDetail] = document.getElementById('detailTextarea').value;
+        updateMenuLabels(); // Update labels after saving
       }
       showScreen('summary');
     }
@@ -819,24 +785,35 @@
       showScreen('summary');
     }
     
-    // State persistence
-    function saveState() {
-      appState.flowName = document.getElementById('flowName').value;
-      appState.flowSteps = document.getElementById('flowSteps').value;
+    // Update menu item labels based on whether content exists
+    function updateMenuLabels() {
+      const menuItems = {
+        'trigger': document.querySelector('[data-detail="trigger"] .menu-label'),
+        'assumptions': document.querySelector('[data-detail="assumptions"] .menu-label'),
+        'preconditions': document.querySelector('[data-detail="preconditions"] .menu-label'),
+        'postconditions': document.querySelector('[data-detail="postconditions"] .menu-label')
+      };
       
-      parent.postMessage({
-        pluginMessage: {
-          type: 'save-state',
-          state: appState
+      const labels = {
+        'trigger': 'Trigger',
+        'assumptions': 'Assumptions',
+        'preconditions': 'Pre-Conditions',
+        'postconditions': 'Post-Conditions'
+      };
+      
+      Object.keys(menuItems).forEach(key => {
+        const hasContent = appState[key] && appState[key].trim() !== '';
+        const prefix = hasContent ? 'Edit' : 'Add';
+        if (menuItems[key]) {
+          menuItems[key].textContent = `${prefix} ${labels[key]}`;
         }
-      }, '*');
+      });
     }
     
-    function loadState() {
-      // Request state from plugin code
-      parent.postMessage({
-        pluginMessage: { type: 'get-state' }
-      }, '*');
+    // Update app state from input fields
+    function updateState() {
+      appState.flowName = document.getElementById('flowName').value;
+      appState.flowSteps = document.getElementById('flowSteps').value;
     }
     
     // Event listeners
@@ -860,18 +837,12 @@
     });
     
     // Detail screen buttons
-    document.getElementById('backBtn').addEventListener('click', cancelDetail);
     document.getElementById('cancelBtn').addEventListener('click', cancelDetail);
     document.getElementById('saveBtn').addEventListener('click', saveDetail);
     
-    // Input handling
-    document.getElementById('flowName').addEventListener('input', saveState);
-    document.getElementById('flowSteps').addEventListener('input', saveState);
-    document.getElementById('detailTextarea').addEventListener('input', () => {
-      if (appState.currentDetail) {
-        appState[appState.currentDetail] = document.getElementById('detailTextarea').value;
-      }
-    });
+    // Input handling - update state when fields change
+    document.getElementById('flowName').addEventListener('input', updateState);
+    document.getElementById('flowSteps').addEventListener('input', updateState);
     
     // Initialize buttons (send message to plugin code)
     document.getElementById('initializeBtn').addEventListener('click', () => {
@@ -925,25 +896,9 @@
       }, '*');
     });
     
-    // Message handler from plugin code
-    window.onmessage = (event) => {
-      const msg = event.data.pluginMessage;
-      if (!msg) return;
-      
-      if (msg.type === 'load-state' && msg.state) {
-        // Restore state from plugin
-        Object.assign(appState, msg.state);
-        
-        // Update UI
-        document.getElementById('flowName').value = appState.flowName || '';
-        document.getElementById('flowSteps').value = appState.flowSteps || '';
-        setMode(appState.mode || 'light');
-        showScreen(appState.currentScreen || 'summary');
-      }
-    };
-    
-    // Initialize on load
-    loadState();
+    // Initialize UI on load
+    setMode('light');
+    showScreen('summary');
   </script>
 </body>
 </html>

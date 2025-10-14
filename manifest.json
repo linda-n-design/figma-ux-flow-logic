@@ -8,9 +8,7 @@
   "enableProposedApi": false,
   "documentAccess": "dynamic-page",
   "editorType": [
-    "figma",
-    "figjam",
-    "slides"
+    "figma"
   ],
   "networkAccess": {
     "allowedDomains": [
