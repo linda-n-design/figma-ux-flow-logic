@@ -1,164 +1,128 @@
-# UX Flow Logic Plugin - Current Progress Summary
+# UX Flow Logic
 
-## ✅ What's Been Completed
-
-### Plugin Location
-**Folder:** `/Users/lindanakasone/Documents/Figma plugin/UX Flow Logic`
-
-### Files Created & Configured
-- ✅ `manifest.json` - Plugin configuration (name: "UX Flow Logic", ID: 1548695544263550149)
-- ✅ `code.ts` - Main plugin logic with reference types added
-- ✅ `code.js` - Successfully compiled TypeScript
-- ✅ `ui.html` - User interface (note: title says "Flow Diagram Annotator" but can be changed to "UX Flow Logic")
-- ✅ `tsconfig.json` - TypeScript configuration
-- ✅ `package.json` - Dependencies installed
-- ✅ All npm packages installed (136 packages)
-
-### Plugin Status
-- ✅ Plugin successfully loaded into Figma Desktop
-- ✅ Plugin runs and creates flow diagrams
-- ⚠️ **Needs refinement/massaging** (visual adjustments needed)
+A Figma plugin for creating annotated UX flow diagrams with metadata tracking.
 
 ---
 
-## 🔧 What Needs Work ("Massaging")
+## About
 
-The plugin works but likely needs improvements in:
+UX Flow Logic helps designers create professional, annotated user flow diagrams. Generate structured templates with metadata sections, flowchart stencils, and linked detail notes. Supports light and dark themes.
 
-### Potential Issues to Address
-1. **Layout & Spacing** - Elements might overlap or be poorly spaced
-2. **Visual Design** - Colors, fonts, or styling might need adjustment
-3. **Dark/Light Mode** - May need to detect Figma's theme and adjust colors
-4. **Arrows/Connectors** - Flow steps might need connecting lines
-5. **UI Title** - Change "Flow Diagram Annotator" to "UX Flow Logic" in ui.html (line 50)
-6. **Responsive Sizing** - Diagram dimensions might need adjustment
-
-### Specific Customizations Mentioned
-- Dark/Light mode detection based on Figma background
-- Adjustable font sizes
-- Adding arrows between steps
-- Better spacing and layout
+**For a visual guide with screenshots and examples**, visit the [UX Flow Logic documentation page](https://lindadesign.net/figma-plugin/ux_flow_logic.html).
 
 ---
 
-## 📁 File Structure
+## Features
 
+- **Structured templates** - Generate flow diagram frames with three-column layout
+- **Metadata tracking** - Document trigger, assumptions, pre-conditions, and post-conditions
+- **Flowchart components** - Reusable stencils for rectangles, diamonds, ovals, and connectors
+- **Light/dark themes** - Coordinated visual styles for different presentation contexts
+- **Component library** - Access shapes from canvas or Assets panel
+
+---
+
+## Installation
+
+Install from the [Figma Community page](https://www.figma.com/community/plugin/1548695544263550149/ux-flow-logic).
+
+1. Visit the plugin page and select "Open in…"
+2. In your Figma Design file, select "Save"
+3. Access the plugin: Right-click → Plugins → UX Flow Logic
+
+---
+
+## Documentation
+
+- **[User Guide](UserGuide.md)** - Complete text-based documentation
+- **[Visual Documentation](https://lindadesign.net/figma-plugin/ux_flow_logic.html)** - Screenshots and examples
+
+---
+
+## Quick Start
+
+1. Open the plugin on an empty page in Figma
+2. Configure your flow in the "Summary" tab (name, theme, metadata)
+3. Optionally add initial steps in "Define flow steps"
+4. Click "Initialize flow" to generate your diagram template
+5. Build your flow using the sticker sheet components
+
+---
+
+## Development
+
+### File Structure
 ```
-/Users/lindanakasone/Documents/Figma plugin/UX Flow Logic/
-├── code.ts              # Main TypeScript source (has reference types line at top)
-├── code.js              # Compiled JavaScript (what Figma runs)
+├── code.ts              # Main TypeScript source
+├── code.js              # Compiled JavaScript
 ├── manifest.json        # Plugin configuration
-├── ui.html              # User interface HTML
+├── ui.html              # User interface
 ├── tsconfig.json        # TypeScript config
 ├── package.json         # Dependencies
-├── package-lock.json    # Locked dependency versions
-├── node_modules/        # Installed packages (136 packages)
-└── README.md            # Documentation
+└── node_modules/        # Installed packages
 ```
 
----
+### Build Commands
 
-## 🚀 How to Continue Tomorrow
+**Compile TypeScript:**
+```bash
+npx tsc code.ts --target ES2017 --lib ES2017
+```
 
-### To Make Changes:
+**Reload plugin in Figma:**
+Plugins → Development → Reload plugin
 
-1. **Navigate to the folder in Terminal:**
-   ```bash
-   cd ~/Documents/Figma\ plugin/UX\ Flow\ Logic
-   ```
+### Making Changes
 
-2. **Edit files in VS Code:**
-   - Open folder: File → Open Folder → select "UX Flow Logic"
-   - Make changes to `code.ts`, `ui.html`, etc.
+1. Navigate to your plugin folder in Terminal
 
-3. **Recompile after editing `code.ts`:**
+2. Edit `code.ts` or `ui.html` in VS Code
+
+3. Recompile TypeScript:
    ```bash
    npx tsc code.ts --target ES2017 --lib ES2017
    ```
 
-4. **Reload plugin in Figma:**
-   - Plugins → Development → Reload plugin
-   - Or: Right-click → Plugins → Development → UX Flow Logic
-
-### Quick Commands Reference:
-```bash
-# Navigate to plugin folder
-cd ~/Documents/Figma\ plugin/UX\ Flow\ Logic
-
-# List files
-ls -la
-
-# Compile TypeScript
-npx tsc code.ts --target ES2017 --lib ES2017
-
-# Check installed packages
-npm list
-```
+4. Reload plugin in Figma
 
 ---
 
-## 🎯 Next Steps for Refinement
+## Technical Details
 
-### Option 1: Visual Tweaks
-Adjust colors, spacing, fonts in `code.ts`:
-- Change background colors
-- Adjust text sizes
-- Modify positioning (x, y coordinates)
-- Update spacing between elements
-
-### Option 2: Add Features
-- **Dark mode detection**: Read Figma's background color
-- **Arrows**: Draw connectors between flow steps
-- **UI customization**: Add color/font controls in ui.html
-- **Better layout**: Use auto-layout or smarter positioning
-
-### Option 3: Fix Specific Issues
-Tell Claude what specifically looks wrong (e.g., "text overlaps", "colors are wrong", "spacing too tight") and get targeted fixes.
-
----
-
-## 💡 Tips for Tomorrow
-
-1. **Test the plugin first** - Run it and see what needs fixing
-2. **Be specific** - Note exact issues (colors, spacing, missing features)
-3. **One change at a time** - Easier to debug if something breaks
-4. **Save often** - Use Git or manual backups
-
----
-
-## 🔑 Key Information
-
-- **Plugin Name:** UX Flow Logic
 - **Plugin ID:** 1548695544263550149
-- **Location:** Documents/Figma plugin/UX Flow Logic
-- **Main Files:** code.ts (edit this), ui.html (edit this)
-- **Compile Command:** `npx tsc code.ts --target ES2017 --lib ES2017`
-- **Reload in Figma:** Plugins → Development → Reload plugin
+- **Plugin Name:** UX Flow Logic
+- **TypeScript:** ES2017 target
+- **UI Architecture:** Inline CSS/JS in ui.html (Figma requirement)
 
 ---
 
-## 📋 Paste This Into New Chat
+## License
 
-"I'm continuing work on my UX Flow Logic Figma plugin. The plugin is working but needs refinement. Here's where I left off:
+MIT License - Copyright (c) 2025 Linda Nakasone
 
-**Location:** `/Users/lindanakasone/Documents/Figma plugin/UX Flow Logic`
-
-**Status:** 
-- Plugin loads successfully in Figma
-- Creates flow diagrams with trigger, assumptions, pre/post-conditions, numbered steps, and details
-- BUT needs visual refinement/massaging
-
-**What I want to improve:**
-[List specific issues you notice - spacing, colors, layout, etc.]
-
-**My setup:**
-- Mac with VS Code
-- Files: code.ts, ui.html, manifest.json all configured
-- All dependencies installed
-- Plugin ID: 1548695544263550149
-
-Can you help me refine [specific aspect]?"
+See [LICENSE](LICENSE) for details.
 
 ---
 
-**Rest well! The hard setup work is done. Tomorrow is just polishing! 🎨**
+## Author
+
+Created and maintained by Linda Nakasone
+
+- Website: [lindadesign.net](http://lindadesign.net)
+- Support: Contact information available on website
+
+---
+
+## Version History
+
+### Version 1.0 (October 13, 2025)
+- Core plugin functionality
+- Summary tab with light/dark mode support
+- Define flow steps interface
+- User guide tab with documentation links
+- "Initialize flow" generation
+- Component-based stencil library
+
+---
+
+*Thank you for using UX Flow Logic! If you find this plugin helpful, please consider leaving a review on the [Figma Community page](https://www.figma.com/community/plugin/1548695544263550149/ux-flow-logic).*
