@@ -1,21 +1,18 @@
 # UX Flow Logic
 
-A Figma plugin for creating annotated UX flow diagrams with metadata tracking.
+A Figma Design plugin for creating annotated UX flow diagrams.
 
 ---
 
 ## About
 
-UX Flow Logic helps designers create professional, annotated user flow diagrams. Generate structured templates with metadata sections, flowchart stencils, and linked detail notes. Supports light and dark themes.
-
-**For a visual guide with screenshots and examples**, visit the [UX Flow Logic documentation page](https://lindadesign.net/figma-plugin/ux_flow_logic.html).
+UX Flow Logic helps designers create professional, annotated user flow diagrams. Generate structured templates with flowchart stencils and linked detail notes. Supports light and dark themes.
 
 ---
 
 ## Features
 
 - **Structured templates** - Generate flow diagram frames with three-column layout
-- **Metadata tracking** - Document trigger, assumptions, pre-conditions, and post-conditions
 - **Flowchart components** - Reusable stencils for rectangles, diamonds, ovals, and connectors
 - **Light/dark themes** - Coordinated visual styles for different presentation contexts
 - **Component library** - Access shapes from canvas or Assets panel
@@ -32,17 +29,17 @@ Install from the [Figma Community page](https://www.figma.com/community/plugin/1
 
 ---
 
-## Documentation
+## User Guide
 
-- **[User Guide](UserGuide.md)** - Complete text-based documentation
-- **[Visual Documentation](https://lindadesign.net/figma-plugin/ux_flow_logic.html)** - Screenshots and examples
+- **[In this GitHub repository](https://github.com/linda-n-design/figma-ux-flow-logic/blob/main/docs/UserGuide.md)**
+- **[In plugin developer's personal website](https://lindadesign.net/figma-plugin/ux_flow_logic.html)**, which includes screenshots and video tutorials
 
 ---
 
 ## Quick Start
 
 1. Open the plugin on an empty page in Figma
-2. Configure your flow in the "Summary" tab (name, theme, metadata)
+2. Configure your flow in the "Summary" tab (name and theme)
 3. Optionally add initial steps in "Define flow steps"
 4. Click "Initialize flow" to generate your diagram template
 5. Build your flow using the sticker sheet components
@@ -66,7 +63,7 @@ Install from the [Figma Community page](https://www.figma.com/community/plugin/1
 
 **Compile TypeScript:**
 ```bash
-npx tsc code.ts --target ES2017 --lib ES2017
+npx tsc
 ```
 
 **Reload plugin in Figma:**
@@ -80,7 +77,7 @@ Plugins → Development → Reload plugin
 
 3. Recompile TypeScript:
    ```bash
-   npx tsc code.ts --target ES2017 --lib ES2017
+   npx tsc
    ```
 
 4. Reload plugin in Figma
@@ -110,18 +107,6 @@ Created and maintained by Linda Nakasone
 
 - Website: [lindadesign.net](http://lindadesign.net)
 - Support: Contact information available on website
-
----
-
-## Version History
-
-### Version 1.0 (October 13, 2025)
-- Core plugin functionality
-- Summary tab with light/dark mode support
-- Define flow steps interface
-- User guide tab with documentation links
-- "Initialize flow" generation
-- Component-based stencil library
 
 ---
 
