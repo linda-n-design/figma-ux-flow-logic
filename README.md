@@ -32,7 +32,7 @@ Install from the [Figma Community page](https://www.figma.com/community/plugin/1
 ## User Guide
 
 - **[In this GitHub repository](https://github.com/linda-n-design/figma-ux-flow-logic/blob/main/docs/UserGuide.md)**
-- **[In plugin developer's personal website](https://lindadesign.net/figma-plugin/ux_flow_logic.html)**, which includes screenshots and video tutorials
+- **[In plugin developer's personal website](https://lindadesign.net/figma-plugin/ux_flow_logic.html)**, which includes screenshots and video tutorial
 
 ---
 
