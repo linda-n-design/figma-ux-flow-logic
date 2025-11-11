@@ -492,9 +492,6 @@
             <button class="tab" role="tab" data-screen="define">
               Define flow steps
             </button>
-            <button class="tab" role="tab" data-screen="guide">
-              User guide
-            </button>
           </div>
         </div>
         
@@ -567,9 +564,6 @@
             <button class="tab active" role="tab" data-screen="define">
               Define flow steps
             </button>
-            <button class="tab" role="tab" data-screen="guide">
-              User guide
-            </button>
           </div>
         </div>
         
@@ -586,72 +580,6 @@
         
         <div class="sticky-footer">
           <button class="btn btn-primary" id="initializeBtn2">
-            Initialize flow
-          </button>
-        </div>
-      </div>
-      
-      <!-- User Guide Screen -->
-      <div id="guideScreen" class="screen">
-        <!-- Tabs -->
-        <div class="top-area">
-          <div class="tabs" role="tablist">
-            <button class="tab" role="tab" data-screen="summary">
-              Summary
-            </button>
-            <button class="tab" role="tab" data-screen="define">
-              Define flow steps
-            </button>
-            <button class="tab active" role="tab" data-screen="guide">
-              User guide
-            </button>
-          </div>
-        </div>
-        
-        <div class="content-area">
-          <div class="content-inner">
-            <div class="content-section">
-              <h2 class="section-title">About</h2>
-              <p class="section-text">
-                UX Flow Logic is a Figma plugin for creating annotated user flow diagrams. It gives you a sticker sheet of standard flowchart symbols, lets you build your flow visually, and then automatically renumbers everything with one click. It also helps you document triggers, assumptions, and conditions—all the context developers need for handoff.
-              </p>
-            </div>
-            
-            <div class="content-section">
-              <h2 class="section-title">Documentation and help</h2>
-
-              <a href="https://github.com/linda-n-design/figma-ux-flow-logic/blob/main/docs/UserGuide.md" target="_blank" class="btn btn-secondary" style="text-decoration: none;">
-                <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_15_461)">
-                    <path d="M6 12.6668C2.66667 13.6668 2.66667 11.0001 1.33334 10.6668M10.6667 14.6668V12.0868C10.6917 11.7689 10.6487 11.4493 10.5407 11.1493C10.4326 10.8493 10.262 10.5757 10.04 10.3468C12.1333 10.1135 14.3333 9.32012 14.3333 5.68012C14.3332 4.74934 13.9751 3.85425 13.3333 3.18012C13.6372 2.36579 13.6158 1.46569 13.2733 0.666788C13.2733 0.666788 12.4867 0.433455 10.6667 1.65345C9.13867 1.23934 7.528 1.23934 6 1.65345C4.18 0.433455 3.39334 0.666788 3.39334 0.666788C3.05092 1.46569 3.02943 2.36579 3.33334 3.18012C2.68675 3.85925 2.32835 4.76243 2.33334 5.70012C2.33334 9.31345 4.53334 10.1068 6.62667 10.3668C6.40733 10.5934 6.23818 10.8637 6.13021 11.1601C6.02224 11.4564 5.97787 11.7722 6 12.0868V14.6668" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_15_461">
-                      <rect width="16" height="16" fill="white"/>
-                    </clipPath>
-                  </defs>
-                </svg>
-                View on GitHub
-              </a>
-              <a href="https://lindadesign.net/figma-plugin/ux_flow_logic.html" target="_blank" class="btn btn-secondary" style="text-decoration: none;">
-                <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_15_455)">
-                    <path d="M14.6667 7.99992C14.6667 11.6818 11.6819 14.6666 8 14.6666M14.6667 7.99992C14.6667 4.31802 11.6819 1.33325 8 1.33325M14.6667 7.99992H1.33333M8 14.6666C4.3181 14.6666 1.33333 11.6818 1.33333 7.99992M8 14.6666C9.66752 12.841 10.6152 10.4719 10.6667 7.99992C10.6152 5.52794 9.66752 3.15882 8 1.33325M8 14.6666C6.33248 12.841 5.38483 10.4719 5.33333 7.99992C5.38483 5.52794 6.33248 3.15882 8 1.33325M1.33333 7.99992C1.33333 4.31802 4.3181 1.33325 8 1.33325" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_15_455">
-                      <rect width="16" height="16" fill="white"/>
-                    </clipPath>
-                  </defs>
-                </svg>
-                Visit webpage
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <div class="sticky-footer">
-          <button class="btn btn-primary" id="initializeBtn3">
             Initialize flow
           </button>
         </div>
@@ -730,7 +658,6 @@
       const screenMap = {
         'summary': 'summaryScreen',
         'define': 'defineScreen',
-        'guide': 'guideScreen',
         'detail': 'detailScreen'
       };
       
@@ -863,23 +790,6 @@
     });
     
     document.getElementById('initializeBtn2').addEventListener('click', () => {
-      parent.postMessage({
-        pluginMessage: {
-          type: 'initialize-flow',
-          data: {
-            flowName: appState.flowName,
-            trigger: appState.trigger,
-            assumptions: appState.assumptions,
-            preconditions: appState.preconditions,
-            postconditions: appState.postconditions,
-            flowSteps: appState.flowSteps,
-            theme: appState.mode
-          }
-        }
-      }, '*');
-    });
-    
-    document.getElementById('initializeBtn3').addEventListener('click', () => {
       parent.postMessage({
         pluginMessage: {
           type: 'initialize-flow',

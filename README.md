@@ -16,6 +16,17 @@ UX Flow Logic helps designers create professional, annotated user flow diagrams.
 - **Flowchart components** - Reusable stencils for rectangles, diamonds, ovals, and connectors
 - **Light/dark themes** - Coordinated visual styles for different presentation contexts
 - **Component library** - Access shapes from canvas or Assets panel
+- **Separate component pages** - Components organized in dedicated pages by theme
+- **Auto-expanding frames** - Frames automatically grow to fit long text content
+
+---
+
+## What's New in v1.1.0
+
+- **🎨 Separate component pages**: Components now organized in "Components - UX Flow Logic - Light Mode" and "Components - UX Flow Logic - Dark Mode" pages
+- **📏 Smart frame expansion**: Frames automatically expand vertically to fit long text without truncation
+- **🧹 Cleaner workspace**: Your working page stays clean with only the flow diagram and sticker sheet
+- **🔄 Dual theme support**: Run the plugin in both light and dark modes to have both component sets available
 
 ---
 
@@ -88,8 +99,27 @@ Plugins → Development → Reload plugin
 
 - **Plugin ID:** 1548695544263550149
 - **Plugin Name:** UX Flow Logic
+- **Version:** 1.1.0
 - **TypeScript:** ES2017 target
 - **UI Architecture:** Inline CSS/JS in ui.html (Figma requirement)
+
+---
+
+## Changelog
+
+### v1.1.0 (2025)
+- Added separate component pages by theme (Light Mode / Dark Mode)
+- Removed "User guide" tab from plugin UI
+- Implemented automatic frame expansion for long text content
+- Improved component organization with dedicated pages
+- Components positioned at x=0, y=0 on component pages
+
+### v1.0.0 (2025)
+- Initial release
+- Flow diagram generation with three-column layout
+- Light and dark theme support
+- Flowchart component library
+- Sticker sheet with reusable components
 
 ---
 

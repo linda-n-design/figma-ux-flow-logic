@@ -48,6 +48,9 @@ figma.ui.onmessage = async (msg) => {
 async function createFlowDiagram(data: any) {
   console.log('createFlowDiagram called with data:', data);
   try {
+    // Store the current page to return to it later
+    const originalPage = figma.currentPage;
+    
     // Load fonts once at the start
     await figma.loadFontAsync(FONTS.REGULAR);
     await figma.loadFontAsync(FONTS.BOLD);
@@ -76,6 +79,22 @@ async function createFlowDiagram(data: any) {
       shapeStroke: { r: 0.459, g: 0.459, b: 0.459 },
       stepNumber: { r: 0.58, g: 0.58, b: 0.58 }
     };
+    
+    // Create or find the components page (with theme suffix)
+    const themeMode = isDark ? 'Dark Mode' : 'Light Mode';
+    const componentsPageName = `Components - UX Flow Logic - ${themeMode}`;
+    
+    let componentsPage = figma.root.children.find(
+      page => page.type === 'PAGE' && page.name === componentsPageName
+    ) as PageNode | undefined;
+    
+    if (!componentsPage) {
+      componentsPage = figma.createPage();
+      componentsPage.name = componentsPageName;
+    }
+    
+    // Switch to components page temporarily to create components there
+    await figma.setCurrentPageAsync(componentsPage);
 
     // Calculate frame height based on number of steps entered
     const contentSteps = steps.length > 0 ? steps.length : 3;
@@ -100,11 +119,39 @@ async function createFlowDiagram(data: any) {
     const metadataHeight = tempMetadataContainer.height;
     const requiredHeightForMetadata = LAYOUT.FRAME_HEADER_HEIGHT + 16 + metadataHeight + 16; // Header + top padding + metadata + bottom padding
     
-    // Use the larger of the two heights
+    // Calculate height needed for notes on the right side
+    let requiredHeightForNotes = LAYOUT.FRAME_HEADER_HEIGHT + 16; // Start with header + top padding
+    if (steps.length > 0) {
+      // Get the Note component to measure its height
+      const noteComponent = await getOrCreateNoteComponent(isDark, colors);
+      
+      // Estimate total notes height: sum of all note heights + spacing between them
+      for (let i = 0; i < steps.length; i++) {
+        // Create a temporary instance to measure actual height with content
+        const tempNoteInstance = noteComponent.createInstance();
+        
+        // Update the details text to measure with actual content
+        const detailsNode = tempNoteInstance.findOne(node => 
+          node.type === 'TEXT' && node.name === 'Details for this step'
+        ) as TextNode | null;
+        
+        if (detailsNode) {
+          await figma.loadFontAsync(detailsNode.fontName as FontName);
+          detailsNode.characters = steps[i];
+        }
+        
+        requiredHeightForNotes += tempNoteInstance.height + 24; // Note height + gap
+        tempNoteInstance.remove(); // Clean up temporary instance
+      }
+      requiredHeightForNotes += 16; // Bottom padding
+    }
+    
+    // Use the largest of all height requirements
     const calculatedHeight = Math.max(
       LAYOUT.FRAME_MIN_HEIGHT,
       baseHeightFromSteps,
-      requiredHeightForMetadata
+      requiredHeightForMetadata,
+      requiredHeightForNotes
     );
     
     const mainFrame = figma.createFrame();
@@ -138,6 +185,10 @@ async function createFlowDiagram(data: any) {
     leftBg.x = 0;
     leftBg.y = LAYOUT.FRAME_HEADER_HEIGHT;
     leftBg.fills = [{ type: 'SOLID', color: colors.columnBg }];
+    leftBg.constraints = {
+      horizontal: 'MIN',
+      vertical: 'STRETCH'
+    };
     mainFrame.appendChild(leftBg);
     
     const rightBg = figma.createRectangle();
@@ -146,6 +197,10 @@ async function createFlowDiagram(data: any) {
     rightBg.x = LAYOUT.FRAME_WIDTH - LAYOUT.RIGHT_COLUMN_WIDTH;
     rightBg.y = LAYOUT.FRAME_HEADER_HEIGHT;
     rightBg.fills = [{ type: 'SOLID', color: colors.columnBg }];
+    rightBg.constraints = {
+      horizontal: 'MAX',
+      vertical: 'STRETCH'
+    };
     mainFrame.appendChild(rightBg);
     
     // Add the metadata container we created earlier for height calculation
@@ -153,19 +208,22 @@ async function createFlowDiagram(data: any) {
     tempMetadataContainer.y = LAYOUT.FRAME_HEADER_HEIGHT + 16; // 16px below top edge of Background for Summary
     mainFrame.appendChild(tempMetadataContainer);
     
+    // Switch back to original page and add main frame there
+    await figma.setCurrentPageAsync(originalPage);
     figma.currentPage.appendChild(mainFrame);
     
-    // Create sticker sheet first - this creates and positions all components
+    // Create sticker sheet on original page (where user is working)
     await createStickerSheet(
       mainFrame.x - LAYOUT.STICKER_SHEET_OFFSET, 
       mainFrame.y, 
       isDark, 
-      colors
+      colors,
+      componentsPage  // Pass components page reference
     );
     
     // Only create center flow instances if user entered steps
     if (steps.length > 0) {
-      // Get the Note component
+      // Get the Note component (from components page)
       const noteComponent = await getOrCreateNoteComponent(isDark, colors);
       
       // Create numbered notes on the right with actual step text, with 24px spacing between them
@@ -201,12 +259,15 @@ async function createFlowDiagram(data: any) {
         currentNoteY += noteInstance.height + 24;
       }
       
-      // Get existing components (already created by sticker sheet)
+      // Get existing components (already created by sticker sheet on components page)
       const components = await getOrCreateFlowComponents(isDark, colors);
       console.log('Creating center flow instances for', steps.length, 'steps');
       const stepInstances = await createCenterFlowInstances(mainFrame, steps, components, colors);
       console.log('Step instances created:', stepInstances.length);
     }
+    
+    // Return to original page
+    await figma.setCurrentPageAsync(originalPage);
     
     figma.currentPage.selection = [mainFrame];
     figma.viewport.scrollAndZoomIntoView([mainFrame]);
@@ -235,7 +296,7 @@ function parseFlowSteps(input: string): string[] {
   
   // Fixed regex: no need to escape dash when it's at the end of character class
   return lines.map(line => {
-    return line.replace(/^[\d]+[\.\)]\s*|^[•\-]\s*/, '').trim();
+    return line.replace(/^[\d]+[\.\)]\s*|^[â€¢\-]\s*/, '').trim();
   }).filter(step => step.length > 0);
 }
 
@@ -257,6 +318,7 @@ async function createMetadataSection(parent: FrameNode, title: string, content: 
   titleText.fontSize = 14;
   titleText.fontName = FONTS.BOLD;
   titleText.fills = [{ type: 'SOLID', color: colors.text }];
+  titleText.textAutoResize = 'HEIGHT'; // Auto-resize vertically, fixed width
   titleText.resize(328, titleText.height);
   titleText.layoutAlign = 'STRETCH';
   sectionFrame.appendChild(titleText);
@@ -267,6 +329,7 @@ async function createMetadataSection(parent: FrameNode, title: string, content: 
   contentText.fontSize = 14;
   contentText.fontName = FONTS.REGULAR;
   contentText.fills = [{ type: 'SOLID', color: colors.text }];
+  contentText.textAutoResize = 'HEIGHT'; // Auto-resize vertically, fixed width
   contentText.resize(328, contentText.height);
   contentText.layoutAlign = 'STRETCH';
   sectionFrame.appendChild(contentText);
@@ -282,16 +345,35 @@ async function getOrCreateNoteComponent(
   const themePrefix = isDark ? 'Dark' : 'Light';
   const noteName = `${themePrefix} mode / Note`;
   
-  // Search for existing component
-  let noteComponent = figma.currentPage.findOne(node => 
+  // Get the components page with theme suffix
+  const themeMode = isDark ? 'Dark Mode' : 'Light Mode';
+  const componentsPageName = `Components - UX Flow Logic - ${themeMode}`;
+  
+  const componentsPage = figma.root.children.find(
+    page => page.type === 'PAGE' && page.name === componentsPageName
+  ) as PageNode | undefined;
+  
+  if (!componentsPage) {
+    throw new Error('Components page not found');
+  }
+  
+  // Search for existing component in components page
+  let noteComponent = componentsPage.findOne(node => 
     node.type === 'COMPONENT' && node.name === noteName
   ) as ComponentNode | null;
   
   // Create if doesn't exist
   if (!noteComponent) {
+    // Switch to components page to create component there
+    const currentPage = figma.currentPage;
+    await figma.setCurrentPageAsync(componentsPage);
+    
     noteComponent = createFlowShapeComponent('note', colors, isDark);
-    noteComponent.x = -450;
-    noteComponent.y = 1200; // Position below other components
+    noteComponent.x = 200; // Position to the right of other components
+    noteComponent.y = 0;
+    
+    // Switch back to original page
+    await figma.setCurrentPageAsync(currentPage);
   }
   
   return noteComponent;
@@ -309,26 +391,45 @@ async function getOrCreateFlowComponents(
   const enterProcessName = `${themePrefix} mode / Enter process`;
   const userActionName = `${themePrefix} mode / User action or system response`;
   
-  // Search for existing components in the current page (should exist from sticker sheet)
-  let enterProcess = figma.currentPage.findOne(node => 
+  // Get the components page with theme suffix
+  const themeMode = isDark ? 'Dark Mode' : 'Light Mode';
+  const componentsPageName = `Components - UX Flow Logic - ${themeMode}`;
+  
+  const componentsPage = figma.root.children.find(
+    page => page.type === 'PAGE' && page.name === componentsPageName
+  ) as PageNode | undefined;
+  
+  if (!componentsPage) {
+    throw new Error('Components page not found');
+  }
+  
+  // Search for existing components in the components page
+  let enterProcess = componentsPage.findOne(node => 
     node.type === 'COMPONENT' && node.name === enterProcessName
   ) as ComponentNode | null;
   
-  let userAction = figma.currentPage.findOne(node => 
+  let userAction = componentsPage.findOne(node => 
     node.type === 'COMPONENT' && node.name === userActionName
   ) as ComponentNode | null;
   
   // Safety fallback: create if they somehow don't exist
-  if (!enterProcess) {
-    enterProcess = createFlowShapeComponent('enterProcess', colors, isDark);
-    enterProcess.x = -450;
-    enterProcess.y = 800;
-  }
-  
-  if (!userAction) {
-    userAction = createFlowShapeComponent('userAction', colors, isDark);
-    userAction.x = -450;
-    userAction.y = 850;
+  if (!enterProcess || !userAction) {
+    const currentPage = figma.currentPage;
+    await figma.setCurrentPageAsync(componentsPage);
+    
+    if (!enterProcess) {
+      enterProcess = createFlowShapeComponent('enterProcess', colors, isDark);
+      enterProcess.x = 0;
+      enterProcess.y = 0;
+    }
+    
+    if (!userAction) {
+      userAction = createFlowShapeComponent('userAction', colors, isDark);
+      userAction.x = 0;
+      userAction.y = 50;
+    }
+    
+    await figma.setCurrentPageAsync(currentPage);
   }
   
   return { enterProcess, userAction };
@@ -357,7 +458,7 @@ async function createCenterFlowInstances(parent: FrameNode, steps: string[], com
   stepInstances.push(enterInstance);
   currentY += enterInstance.height;
   
-  // For remaining steps: arrow → step → arrow → step...
+  // For remaining steps: arrow â†’ step â†’ arrow â†’ step...
   for (let i = 1; i < steps.length; i++) {
     // Create arrow line (vertical, pointing down) with arrow endpoint
     const arrow = figma.createVector();
@@ -905,8 +1006,11 @@ function createFlowShapeComponent(
   return component;
 }
 
-async function createStickerSheet(x: number, y: number, isDark: boolean, colors: any) {
+async function createStickerSheet(x: number, y: number, isDark: boolean, colors: any, componentsPage: PageNode) {
   try {
+    // Note: This function is called when figma.currentPage is the original page
+    // Components will be created on the componentsPage, but sticker sheet stays on current page
+    
     const stickerFrame = figma.createFrame();
     stickerFrame.name = "Flow Diagram Sticker Sheet";
     stickerFrame.resize(400, LAYOUT.STICKER_SHEET_HEIGHT);
@@ -948,26 +1052,35 @@ async function createStickerSheet(x: number, y: number, isDark: boolean, colors:
       { type: 'note', name: "Note", height: 26 }
     ];
     
-    // Position for component masters (below sticker sheet, for organization)
-    let componentY = y + LAYOUT.STICKER_SHEET_HEIGHT;
+    // Position for component masters on components page (starting at 0, 0)
+    let componentY = 0;
     
     for (const shape of shapeTypes) {
       try {
         const themePrefix = isDark ? 'Dark' : 'Light';
         const componentName = `${themePrefix} mode / ${shape.name}`;
         
-        // Check if component already exists
-        let component = figma.currentPage.findOne(node => 
+        // Check if component already exists in components page
+        let component = componentsPage.findOne(node => 
           node.type === 'COMPONENT' && node.name === componentName
         ) as ComponentNode | null;
         
         // Only create if it doesn't exist
         if (!component) {
+          // Store current page
+          const currentPage = figma.currentPage;
+          
+          // Switch to components page to create component
+          await figma.setCurrentPageAsync(componentsPage);
+          
           component = createFlowShapeComponent(shape.type, colors, isDark);
-          // Position component master below sticker sheet for organization
-          component.x = x; // Same X as sticker sheet
+          // Position component master on components page starting at x=0, y=0
+          component.x = 0;
           component.y = componentY;
           componentY += shape.height + 20;
+          
+          // Switch back to original page
+          await figma.setCurrentPageAsync(currentPage);
         }
         
         const instance = component.createInstance();
