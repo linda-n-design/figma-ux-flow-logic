@@ -21,7 +21,7 @@ UX Flow Logic helps designers create professional, annotated user flow diagrams.
 
 ---
 
-## What's New in v1.1.0
+## What's New in v2.0
 
 - **🎨 Separate component pages**: Components now organized in "Components - UX Flow Logic - Light Mode" and "Components - UX Flow Logic - Dark Mode" pages
 - **📏 Smart frame expansion**: Frames automatically expand vertically to fit long text without truncation
@@ -99,7 +99,7 @@ Plugins → Development → Reload plugin
 
 - **Plugin ID:** 1548695544263550149
 - **Plugin Name:** UX Flow Logic
-- **Version:** 1.1.0
+- **Version:** 2.0
 - **TypeScript:** ES2017 target
 - **UI Architecture:** Inline CSS/JS in ui.html (Figma requirement)
 
@@ -107,7 +107,7 @@ Plugins → Development → Reload plugin
 
 ## Changelog
 
-### v1.1.0 (2025)
+### v2.0 (2025)
 - Added separate component pages by theme (Light Mode / Dark Mode)
 - Removed "User guide" tab from plugin UI
 - Implemented automatic frame expansion for long text content

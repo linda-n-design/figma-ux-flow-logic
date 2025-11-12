@@ -1,6 +1,6 @@
 # UX Flow Logic - User Guide
 
-**Version 1.1**  
+**Version 2.0**  
 *Last Updated: November 11, 2025*
 
 ---
@@ -66,7 +66,7 @@ Choose your preferred visual theme:
 
 If you select dark mode, both the diagram stencils and the flow diagram draft will have a dark background with light-colored stencils and text.
 
-**New in v1.1:** Components are now organized in separate pages based on your theme selection:
+**New in v2.0** Components are now organized in separate pages based on your theme selection:
 - Light mode creates: "Components - UX Flow Logic - Light Mode" page
 - Dark mode creates: "Components - UX Flow Logic - Dark Mode" page
 
@@ -83,7 +83,7 @@ Enter a meaningful name for your flow.
 
 Document the important, high-level details about your flow. Select each contextual information item to enter its details in a separate screen, or skip this step and add them directly to the flow diagram frame on the canvas after selecting 'Initialize Flow.'
 
-**New in v1.1:** Text fields automatically expand to fit long content—no more truncated text!
+**New in v2.0:** Text fields automatically expand to fit long content—no more truncated text!
 
 **Trigger**  
 What initiates this flow?
@@ -140,7 +140,7 @@ Add indentation for sub-steps or conditional branches.
 4. Account is created
 ```
 
-**New in v1.1:** The frame automatically grows to accommodate long step descriptions—no manual resizing needed!
+**New in v2.0:** The frame automatically grows to accommodate long step descriptions—no manual resizing needed!
 
 ---
 
@@ -152,7 +152,7 @@ When you activate "Initialize flow," the plugin creates components and diagrams 
 
 ### What gets generated
 
-#### 1. Component master page (NEW in v1.1)
+#### 1. Component master page (NEW in v2.0)
 
 A dedicated page is created to store all component masters:
 - **Light mode:** Creates "Components - UX Flow Logic - Light Mode" page
@@ -195,7 +195,7 @@ A starter diagram based on the information you added in the Summary and/or Defin
 - The frame name in your layers panel  
 - The title displayed at the top of the diagram
 
-**New in v1.1:** The frame automatically expands vertically to fit all your content, regardless of length.
+**New in v2.0:** The frame automatically expands vertically to fit all your content, regardless of length.
 
 ### Important notes
 
@@ -255,7 +255,7 @@ My first UX design manager, interaction design rock star, and brilliant poet, Ch
 
 ## Version history
 
-### Version 1.1 (November 11, 2025)
+### Version 2.0 (November 11, 2025)
 
 **Major improvements:**
 - **Separate component pages:** Components now organized in dedicated "Components - UX Flow Logic - Light Mode" and "Components - UX Flow Logic - Dark Mode" pages
